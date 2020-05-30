@@ -124,6 +124,9 @@ def takeSkyPicture():
     if (config.USEWEATHERSTEM == True):
         sendSkyWeather()
 
+	if (config.USEMYAPI == True):
+        sendWeatherMyAPI()
+
 
 import base64
 
@@ -404,6 +407,56 @@ def sendSkyWeather():
     if (config.SWDEBUG):
         print("The pastebin URL is (r.text):%s"%pastebin_url) 
 
+def sendWeatherMyAPI():
+
+    # defining the api-endpoint  
+    API_ENDPOINT = "https://weather.alesmarenk.com/api/weather"
+     
+    with open("static/skycamera.jpg", "rb") as image_file:
+       encoded_string = base64.b64encode(image_file.read())
+
+    if (config.SWDEBUG):
+        print ("--------------------")
+        print ("AlesMarenk.com Weather Package Sending")
+        print ("--------------------")
+
+    if(state.barometricTrend == True):
+        bptrendvalue = "Rising"
+    else:
+        bptrendvalue = "Falling"
+   
+    currentTime = time.time()
+
+	data = {
+				"StationID": 1,
+				"TimeStamp": currentTime,
+				"OutsideTemperature": state.currentOutsideTemperature,
+				"OutsideHumidity": state.currentOutsideHumidity,
+				"InsideTemperature": state.currentInsideTemperature,
+				"InsideHumidity": state.currentInsideHumidity,
+				"RainInLast60Minutes": state.currentRain60Minutes,
+				"VisibleSunlight": state.currentSunlightVisible,
+				"IRSunlight": state.currentSunlightIR,
+				"UVSunlight": state.currentSunlightUV,
+				"WindSpeed": state.ScurrentWindSpeed,
+				"WindGust": state.ScurrentWindGust,
+				"WindDirection": state.ScurrentWindDirection,
+				"BarometricPressure": state.currentBarometricPressure,
+				"Altitude": state.currentAltitude,
+				"SeaLevelPressure": state.currentSeaLevel,
+				"BarometricTrend": bptrendvalue,
+				"AQI": state.Outdoor_AirQuality_Sensor_Value,
+				"LastLightningDistance": state.currentAs3935LastDistance,
+				"LastLightningTimeStamp": state.currentAs3935LastLightningTimeStamp
+	}
+
+    # sending post request and saving response as response object 
+    r = requests.post(url = API_ENDPOINT, json = data, auth=('weather_user_343', 'SDFKsdf434fdf!!')) 
+    #print data 
+    # extracting response text  
+    pastebin_url = r.text 
+    if (config.SWDEBUG):
+        print("The pastebin URL is (r.text):%s"%pastebin_url)
 
 
         
