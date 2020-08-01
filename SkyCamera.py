@@ -63,7 +63,7 @@ def takeSkyPicture():
         val = util.returnTemperatureCF(state.currentOutsideTemperature)
         OTtval = "{0:0.1f} ".format(val) + util.returnTemperatureCFUnit()
 
-        myText = "SkyWeather %s Wind Speed: %s Wind Gust: %s Temp: %s " % (dt.datetime.now().strftime('%d-%b-%Y %H:%M:%S'),WindStval, WindGtval, OTtval)
+        myText = "Weather %s Wind Speed: %s Wind Gust: %s Temp: %s " % (dt.datetime.now().strftime('%d-%b-%Y %H:%M:%S'),WindStval, WindGtval, OTtval)
 
         # Draw the text
         color = 'rgb(255,255,255)'
@@ -86,14 +86,9 @@ def takeSkyPicture():
 
         pil_im.paste(button_img, (0, 0))
         bg_w, bg_h = pil_im.size 
-        # WeatherSTEM logo in lower left
         size = 64
-        WSLimg = Image.open("static/WeatherSTEMLogoSkyBackground.png")
-        WSLimg.thumbnail((size,size),Image.ANTIALIAS)
-        pil_im.paste(WSLimg, (0, bg_h-size))
-
         # SkyWeather log in lower right
-        SWLimg = Image.open("static/SkyWeatherLogoSymbol.png")
+        SWLimg = Image.open("static/logo.png")
         SWLimg.thumbnail((size,size),Image.ANTIALIAS)
         pil_im.paste(SWLimg, (bg_w-size, bg_h-size))
 
@@ -447,7 +442,8 @@ def sendWeatherMyAPI():
 				"BarometricTrend": bptrendvalue,
 				"AQI": state.Outdoor_AirQuality_Sensor_Value,
 				"LastLightningDistance": state.currentAs3935LastDistance,
-				"LastLightningTimeStamp": state.currentAs3935LastLightningTimeStamp
+				"LastLightningTimeStamp": state.currentAs3935LastLightningTimeStamp,
+				"image"; encoded_string
 	}
 
     # sending post request and saving response as response object 
