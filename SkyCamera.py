@@ -425,7 +425,7 @@ def sendWeatherMyAPI():
     
     dt_last_lightning = 0
     if(state.currentAs3935LastLightningTimeStamp != 0):
-        dt_last_lightning = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
+        dt_last_lightning = dt.datetime.fromtimestamp(state.currentAs3935LastLightningTimeStamp).strftime("%Y-%m-%d %H:%M:%S")
 
     data = {
                 "StationID": 1,
@@ -435,6 +435,7 @@ def sendWeatherMyAPI():
                 "InsideTemperature": state.currentInsideTemperature,
                 "InsideHumidity": state.currentInsideHumidity,
                 "RainInLast60Minutes": state.currentRain60Minutes,
+                "TotalRain": state.currentTotalRain,
                 "VisibleSunlight": state.currentSunlightVisible,
                 "IRSunlight": state.currentSunlightIR,
                 "UVSunlight": state.currentSunlightUV,
@@ -448,9 +449,9 @@ def sendWeatherMyAPI():
                 "AQI": state.Outdoor_AirQuality_Sensor_Value,
                 "LastLightningDistance": state.currentAs3935LastDistance,
                 "LastLightningTimeStamp": dt_last_lightning,
-				"image": encoded_string
+		"image": encoded_string
     }
-    print(data)
+    #print(data)
     try:
             # sending post request and saving response as response object 
             r = requests.post(url = API_ENDPOINT, json = data, auth = ('weather_user_343', 'SDFKsdf434fdf!!')) 
