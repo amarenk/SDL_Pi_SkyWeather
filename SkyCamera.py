@@ -427,7 +427,9 @@ def sendWeatherMyAPI():
     dt_last_lightning = 0
     if(state.currentAs3935LastLightningTimeStamp != 0):
         dt_last_lightning = dt.datetime.fromtimestamp(state.currentAs3935LastLightningTimeStamp).strftime("%Y-%m-%d %H:%M:%S")
-
+    if(state.currentSunlightVisible < 10):
+        encoded_string = ""
+        
     data = {
                 "StationID": 1,
                 "TimeStamp": currentTime,
